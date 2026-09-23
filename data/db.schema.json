@@ -1,0 +1,2344 @@
+{
+  "alter": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "command",
+        "type": "STRING"
+      },
+      {
+        "name": "type",
+        "type": "STRING"
+      },
+      {
+        "name": "isEmbed",
+        "type": "NUMBER"
+      },
+      {
+        "name": "text",
+        "type": "STRING"
+      },
+      {
+        "name": "sideImg",
+        "type": "STRING"
+      },
+      {
+        "name": "bottomImg",
+        "type": "STRING"
+      },
+      {
+        "name": "color",
+        "type": "NUMBER"
+      },
+      {
+        "name": "title",
+        "type": "STRING"
+      },
+      {
+        "name": "footer",
+        "type": "STRING"
+      },
+      {
+        "name": "author",
+        "type": "STRING"
+      },
+      {
+        "name": "showAvatar",
+        "type": "NUMBER"
+      },
+      {
+        "name": "extra",
+        "type": "STRING"
+      },
+      {
+        "name": "updated_at",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid",
+      "command",
+      "type"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "alterbattle": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "type",
+        "type": "STRING"
+      },
+      {
+        "name": "sideImg",
+        "type": "STRING"
+      },
+      {
+        "name": "color",
+        "type": "NUMBER"
+      },
+      {
+        "name": "title",
+        "type": "STRING"
+      },
+      {
+        "name": "footer",
+        "type": "STRING"
+      },
+      {
+        "name": "author",
+        "type": "STRING"
+      },
+      {
+        "name": "showAvatar",
+        "type": "NUMBER"
+      },
+      {
+        "name": "updated_at",
+        "type": "STRING"
+      },
+      {
+        "name": "bottomImg",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid",
+      "type"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "alterhunt": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "type",
+        "type": "STRING"
+      },
+      {
+        "name": "isEmbed",
+        "type": "NUMBER"
+      },
+      {
+        "name": "text",
+        "type": "STRING"
+      },
+      {
+        "name": "sideImg",
+        "type": "STRING"
+      },
+      {
+        "name": "bottomImg",
+        "type": "STRING"
+      },
+      {
+        "name": "color",
+        "type": "NUMBER"
+      },
+      {
+        "name": "title",
+        "type": "STRING"
+      },
+      {
+        "name": "footer",
+        "type": "STRING"
+      },
+      {
+        "name": "author",
+        "type": "STRING"
+      },
+      {
+        "name": "showAvatar",
+        "type": "NUMBER"
+      },
+      {
+        "name": "updated_at",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid",
+      "type"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "animal": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "pid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "xp",
+        "type": "NUMBER"
+      },
+      {
+        "name": "ispet",
+        "type": "NUMBER"
+      },
+      {
+        "name": "nickname",
+        "type": "STRING"
+      },
+      {
+        "name": "totalcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "offensive",
+        "type": "NUMBER"
+      },
+      {
+        "name": "sellcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "saccount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id",
+      "name"
+    ],
+    "unique": [
+      [
+        "pid"
+      ]
+    ],
+    "auto": "pid"
+  },
+  "animal_count": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "common",
+        "type": "NUMBER"
+      },
+      {
+        "name": "uncommon",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rare",
+        "type": "NUMBER"
+      },
+      {
+        "name": "epic",
+        "type": "NUMBER"
+      },
+      {
+        "name": "mythical",
+        "type": "NUMBER"
+      },
+      {
+        "name": "legendary",
+        "type": "NUMBER"
+      },
+      {
+        "name": "special",
+        "type": "NUMBER"
+      },
+      {
+        "name": "fabled",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreon",
+        "type": "NUMBER"
+      },
+      {
+        "name": "cpatreon",
+        "type": "NUMBER"
+      },
+      {
+        "name": "hidden",
+        "type": "NUMBER"
+      },
+      {
+        "name": "gem",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bot",
+        "type": "NUMBER"
+      },
+      {
+        "name": "distorted",
+        "type": "NUMBER"
+      },
+      {
+        "name": "total",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "animals": {
+    "columns": [
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "rank",
+        "type": "STRING"
+      },
+      {
+        "name": "hp",
+        "type": "NUMBER"
+      },
+      {
+        "name": "att",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pr",
+        "type": "NUMBER"
+      },
+      {
+        "name": "wp",
+        "type": "NUMBER"
+      },
+      {
+        "name": "mag",
+        "type": "NUMBER"
+      },
+      {
+        "name": "mr",
+        "type": "NUMBER"
+      },
+      {
+        "name": "description",
+        "type": "STRING"
+      },
+      {
+        "name": "alt",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "name"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "animals_rank": {
+    "columns": [
+      {
+        "name": "rank",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "rank"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "announcement": {
+    "columns": [
+      {
+        "name": "aid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "url",
+        "type": "STRING"
+      },
+      {
+        "name": "adate",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "aid"
+    ],
+    "unique": [],
+    "auto": "aid"
+  },
+  "autohunt": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "essence",
+        "type": "STRING"
+      },
+      {
+        "name": "efficiency",
+        "type": "NUMBER"
+      },
+      {
+        "name": "duration",
+        "type": "NUMBER"
+      },
+      {
+        "name": "cost",
+        "type": "NUMBER"
+      },
+      {
+        "name": "gain",
+        "type": "NUMBER"
+      },
+      {
+        "name": "exp",
+        "type": "NUMBER"
+      },
+      {
+        "name": "radar",
+        "type": "STRING"
+      },
+      {
+        "name": "start",
+        "type": "STRING"
+      },
+      {
+        "name": "huntcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "huntmin",
+        "type": "NUMBER"
+      },
+      {
+        "name": "password",
+        "type": "STRING"
+      },
+      {
+        "name": "passwordtime",
+        "type": "STRING"
+      },
+      {
+        "name": "total",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "backgrounds": {
+    "columns": [
+      {
+        "name": "bid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "name_color",
+        "type": "STRING"
+      },
+      {
+        "name": "bname",
+        "type": "STRING"
+      },
+      {
+        "name": "price",
+        "type": "NUMBER"
+      },
+      {
+        "name": "active",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "bid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "battle_settings": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "auto",
+        "type": "NUMBER"
+      },
+      {
+        "name": "display",
+        "type": "STRING"
+      },
+      {
+        "name": "speed",
+        "type": "NUMBER"
+      },
+      {
+        "name": "logs",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "battle_type": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "type",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "blackjack": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "bjid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bet",
+        "type": "NUMBER"
+      },
+      {
+        "name": "date",
+        "type": "STRING"
+      },
+      {
+        "name": "active",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [
+      [
+        "bjid"
+      ]
+    ],
+    "auto": "bjid"
+  },
+  "blackjack_card": {
+    "columns": [
+      {
+        "name": "bjid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "card",
+        "type": "NUMBER"
+      },
+      {
+        "name": "dealer",
+        "type": "NUMBER"
+      },
+      {
+        "name": "sort",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "bjid",
+      "card"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "blacklist": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "boss_ticket": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "reset",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "boss_weapon": {
+    "columns": [
+      {
+        "name": "gid",
+        "type": "STRING"
+      },
+      {
+        "name": "wid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "stat",
+        "type": "STRING"
+      },
+      {
+        "name": "avg",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "gid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "boss_weapon_passive": {
+    "columns": [
+      {
+        "name": "gid",
+        "type": "STRING"
+      },
+      {
+        "name": "pcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "wpid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "stat",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "gid",
+      "pcount"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "buff": {
+    "columns": [
+      {
+        "name": "bfid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "bfid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "collectibles": {
+    "columns": [
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "data",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "name"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "compensation": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "NUMBER"
+      },
+      {
+        "name": "reward",
+        "type": "STRING"
+      },
+      {
+        "name": "end_date",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": "id"
+  },
+  "cowoncy": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "money",
+        "type": "STRING"
+      },
+      {
+        "name": "daily",
+        "type": "STRING"
+      },
+      {
+        "name": "daily_streak",
+        "type": "NUMBER"
+      },
+      {
+        "name": "battle",
+        "type": "STRING"
+      },
+      {
+        "name": "pet",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "cowoncy_limit": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "send",
+        "type": "NUMBER"
+      },
+      {
+        "name": "receive",
+        "type": "NUMBER"
+      },
+      {
+        "name": "reset",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "cowoncydrop": {
+    "columns": [
+      {
+        "name": "channel",
+        "type": "STRING"
+      },
+      {
+        "name": "amount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "channel"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "crate": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "cratetype",
+        "type": "NUMBER"
+      },
+      {
+        "name": "boxcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claimcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claim",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid",
+      "cratetype"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "disabled": {
+    "columns": [
+      {
+        "name": "channel",
+        "type": "STRING"
+      },
+      {
+        "name": "command",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "channel",
+      "command"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "emoji_steal": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "guild",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "feedback": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "NUMBER"
+      },
+      {
+        "name": "type",
+        "type": "STRING"
+      },
+      {
+        "name": "message",
+        "type": "STRING"
+      },
+      {
+        "name": "sender",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": "id"
+  },
+  "gem": {
+    "columns": [
+      {
+        "name": "gname",
+        "type": "STRING"
+      },
+      {
+        "name": "type",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "gname"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "giveaway": {
+    "columns": [
+      {
+        "name": "cid",
+        "type": "STRING"
+      },
+      {
+        "name": "mid",
+        "type": "STRING"
+      },
+      {
+        "name": "rewards",
+        "type": "STRING"
+      },
+      {
+        "name": "endDate",
+        "type": "STRING"
+      },
+      {
+        "name": "winners",
+        "type": "NUMBER"
+      },
+      {
+        "name": "active",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "cid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "guild": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "young",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "guild_boss": {
+    "columns": [
+      {
+        "name": "gid",
+        "type": "STRING"
+      },
+      {
+        "name": "active",
+        "type": "NUMBER"
+      },
+      {
+        "name": "created",
+        "type": "STRING"
+      },
+      {
+        "name": "boss_animal",
+        "type": "STRING"
+      },
+      {
+        "name": "boss_lvl",
+        "type": "NUMBER"
+      },
+      {
+        "name": "boss_hp",
+        "type": "NUMBER"
+      },
+      {
+        "name": "boss_wp",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "gid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "guild_setting": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "levelup",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "icecream": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "item": {
+    "columns": [
+      {
+        "name": "name",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "name"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "items": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "common_tickets",
+        "type": "NUMBER"
+      },
+      {
+        "name": "unwrapped_common_tickets",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "lootbox": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "boxcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claimcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claim",
+        "type": "STRING"
+      },
+      {
+        "name": "fbox",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "lottery": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "amount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "valid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "channel",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "luck": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "lcount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "marriage": {
+    "columns": [
+      {
+        "name": "uid1",
+        "type": "NUMBER"
+      },
+      {
+        "name": "uid2",
+        "type": "NUMBER"
+      },
+      {
+        "name": "marriedDate",
+        "type": "STRING"
+      },
+      {
+        "name": "dailies",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claimDate",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid1",
+      "uid2"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "patreon_discord": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "endDate",
+        "type": "STRING"
+      },
+      {
+        "name": "patreonType",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "patreon_wh": {
+    "columns": [
+      {
+        "name": "pid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "endDate",
+        "type": "STRING"
+      },
+      {
+        "name": "patreonType",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "pid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "patreons": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreonMonths",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreonType",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreonTimer",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "pet_team": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pgid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "tname",
+        "type": "STRING"
+      },
+      {
+        "name": "win",
+        "type": "NUMBER"
+      },
+      {
+        "name": "lose",
+        "type": "NUMBER"
+      },
+      {
+        "name": "censor",
+        "type": "NUMBER"
+      },
+      {
+        "name": "streak",
+        "type": "NUMBER"
+      },
+      {
+        "name": "highest_streak",
+        "type": "NUMBER"
+      },
+      {
+        "name": "disabled",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "pgid",
+      "uid"
+    ],
+    "unique": [],
+    "auto": "pgid"
+  },
+  "pet_team_active": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pgid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "pet_team_animal": {
+    "columns": [
+      {
+        "name": "pgid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pos",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "pgid",
+      "pos"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "pet_team_battle": {
+    "columns": [
+      {
+        "name": "pgid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "epgid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "started",
+        "type": "STRING"
+      },
+      {
+        "name": "cphp",
+        "type": "STRING"
+      },
+      {
+        "name": "cpwp",
+        "type": "STRING"
+      },
+      {
+        "name": "cehp",
+        "type": "STRING"
+      },
+      {
+        "name": "cewp",
+        "type": "STRING"
+      },
+      {
+        "name": "active",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "pgid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "pet_team_battle_buff": {
+    "columns": [
+      {
+        "name": "pgid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bfid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "duration",
+        "type": "NUMBER"
+      },
+      {
+        "name": "qualities",
+        "type": "STRING"
+      },
+      {
+        "name": "pfrom",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "pgid",
+      "pid",
+      "bfid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "pizza": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "propose": {
+    "columns": [
+      {
+        "name": "sender",
+        "type": "STRING"
+      },
+      {
+        "name": "receiver",
+        "type": "STRING"
+      },
+      {
+        "name": "time",
+        "type": "STRING"
+      },
+      {
+        "name": "rid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "sender",
+      "receiver"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "quest": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "qid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "qname",
+        "type": "STRING"
+      },
+      {
+        "name": "level",
+        "type": "NUMBER"
+      },
+      {
+        "name": "prize",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claimed",
+        "type": "STRING"
+      },
+      {
+        "name": "locked",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "qid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "quest_level": {
+    "columns": [
+      {
+        "name": "level",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "level"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "quest_prizes": {
+    "columns": [
+      {
+        "name": "prize",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "prize"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "quest_types": {
+    "columns": [
+      {
+        "name": "qname",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "qname"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "ranking": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "ranking",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "rep": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "lasttime",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "ring": {
+    "columns": [
+      {
+        "name": "rid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "rid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "rules": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "opinion",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "shards": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "survey": {
+    "columns": [
+      {
+        "name": "sid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "endDate",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "sid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "survey_question": {
+    "columns": [
+      {
+        "name": "sid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "number",
+        "type": "NUMBER"
+      },
+      {
+        "name": "question",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "sid",
+      "number"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "timeout": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "time",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "penalty",
+        "type": "NUMBER"
+      },
+      {
+        "name": "prev_penalty",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "timers": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "questTime",
+        "type": "STRING"
+      },
+      {
+        "name": "dailyTime",
+        "type": "STRING"
+      },
+      {
+        "name": "lootboxTime",
+        "type": "STRING"
+      },
+      {
+        "name": "questrrTime",
+        "type": "STRING"
+      },
+      {
+        "name": "cookieTime",
+        "type": "STRING"
+      },
+      {
+        "name": "checklist",
+        "type": "STRING"
+      },
+      {
+        "name": "eventTime",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "tracker": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "questCount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "transaction": {
+    "columns": [
+      {
+        "name": "tid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "sender",
+        "type": "STRING"
+      },
+      {
+        "name": "reciever",
+        "type": "STRING"
+      },
+      {
+        "name": "time",
+        "type": "STRING"
+      },
+      {
+        "name": "amount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "sender",
+      "reciever",
+      "time"
+    ],
+    "unique": [
+      [
+        "tid"
+      ]
+    ],
+    "auto": "tid"
+  },
+  "user": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreonAnimal",
+        "type": "NUMBER"
+      },
+      {
+        "name": "patreonDaily",
+        "type": "NUMBER"
+      },
+      {
+        "name": "started",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [
+      [
+        "uid"
+      ]
+    ],
+    "auto": "uid"
+  },
+  "user_announcement": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "aid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "disabled",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_backgrounds": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "bid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_ban": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "command",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "id",
+      "command"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_battle": {
+    "columns": [
+      {
+        "name": "user1",
+        "type": "NUMBER"
+      },
+      {
+        "name": "user2",
+        "type": "NUMBER"
+      },
+      {
+        "name": "sender",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bet",
+        "type": "NUMBER"
+      },
+      {
+        "name": "time",
+        "type": "STRING"
+      },
+      {
+        "name": "win1",
+        "type": "NUMBER"
+      },
+      {
+        "name": "win2",
+        "type": "NUMBER"
+      },
+      {
+        "name": "tie",
+        "type": "NUMBER"
+      },
+      {
+        "name": "flags",
+        "type": "STRING"
+      },
+      {
+        "name": "channel",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "user1",
+      "user2"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_boss": {
+    "columns": [
+      {
+        "name": "gid",
+        "type": "STRING"
+      },
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "total_dmg",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "gid",
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_compensation": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "cid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "cid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_event": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "claim_reset",
+        "type": "STRING"
+      },
+      {
+        "name": "claim_count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "name"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_gem": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "gname",
+        "type": "STRING"
+      },
+      {
+        "name": "gcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "activecount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "gname"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_giveaway": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "cid",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uid",
+      "cid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_item": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "daily_reset",
+        "type": "STRING"
+      },
+      {
+        "name": "daily_count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "claim_reset",
+        "type": "STRING"
+      },
+      {
+        "name": "claim_count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "name"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_level_rewards": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rewardLvl",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_pray": {
+    "columns": [
+      {
+        "name": "sender",
+        "type": "STRING"
+      },
+      {
+        "name": "receiver",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      },
+      {
+        "name": "latest",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "sender",
+      "receiver"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_profile": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "bid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "accent",
+        "type": "STRING"
+      },
+      {
+        "name": "about",
+        "type": "STRING"
+      },
+      {
+        "name": "accent2",
+        "type": "STRING"
+      },
+      {
+        "name": "title",
+        "type": "STRING"
+      },
+      {
+        "name": "private",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_ring": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rcount",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid",
+      "rid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_survey": {
+    "columns": [
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "sid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "question_number",
+        "type": "NUMBER"
+      },
+      {
+        "name": "in_progress",
+        "type": "NUMBER"
+      },
+      {
+        "name": "is_done",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_weapon": {
+    "columns": [
+      {
+        "name": "uwid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "uid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "wid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "stat",
+        "type": "STRING"
+      },
+      {
+        "name": "found",
+        "type": "STRING"
+      },
+      {
+        "name": "pid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "avg",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rrcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "rrattempt",
+        "type": "NUMBER"
+      },
+      {
+        "name": "wear",
+        "type": "NUMBER"
+      },
+      {
+        "name": "favorite",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uwid"
+    ],
+    "unique": [
+      [
+        "pid"
+      ]
+    ],
+    "auto": "uwid"
+  },
+  "user_weapon_kills": {
+    "columns": [
+      {
+        "name": "uwid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "kills",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "uwid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "user_weapon_passive": {
+    "columns": [
+      {
+        "name": "uwid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "pcount",
+        "type": "NUMBER"
+      },
+      {
+        "name": "wpid",
+        "type": "NUMBER"
+      },
+      {
+        "name": "stat",
+        "type": "STRING"
+      }
+    ],
+    "pk": [
+      "uwid",
+      "pcount"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "vote": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "STRING"
+      },
+      {
+        "name": "date",
+        "type": "STRING"
+      },
+      {
+        "name": "count",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "id"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "weapon": {
+    "columns": [
+      {
+        "name": "wid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "wid"
+    ],
+    "unique": [],
+    "auto": null
+  },
+  "weapon_passive": {
+    "columns": [
+      {
+        "name": "wpid",
+        "type": "NUMBER"
+      }
+    ],
+    "pk": [
+      "wpid"
+    ],
+    "unique": [],
+    "auto": null
+  }
+}
