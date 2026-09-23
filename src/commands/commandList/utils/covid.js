@@ -9,6 +9,32 @@ const CommandInterface = require('../../CommandInterface.js');
 
 const request = require('request');
 let cases = {};
+
+function fetchCases() {
+	if (!process.env.SHARDER_HOST) {
+		return;
+	}
+
+	request(
+		{
+			method: 'GET',
+			uri: `${process.env.SHARDER_HOST}/covid`,
+		},
+		(error, res, body) => {
+			if (error) {
+				console.error('[COVID] Gagal mengambil data:', error.message);
+				return;
+			}
+
+			try {
+				cases = JSON.parse(body);
+			} catch (parseError) {
+				console.error('[COVID] Respons tidak valid:', parseError.message);
+			}
+		}
+	);
+}
+
 fetchCases();
 setInterval(fetchCases, 1800000);
 
@@ -17,7 +43,7 @@ module.exports = new CommandInterface({
 
 	args: '{countryName}',
 
-	desc: 'Shows the current coronavirus cases. You can specify a country in the arguments. Stay safe out there and please remember to wash your hands. The information is pulled from this github https://www.worldometers.info/coronavirus/',
+	desc: 'Shows the current coronavirus cases. You can specify a country in the arguments. Stay safe out there and please remember to wash your hands. The information is pulled from this github https://github.com/CSSEGISandData/COVID-19',
 
 	example: ['owo covid', 'owo coronavirus usa'],
 
@@ -39,7 +65,7 @@ module.exports = new CommandInterface({
 });
 
 function showStats(p, name) {
-	let stat = cases[name];
+	const stat = cases[name];
 	if (!stat) {
 		p.errorMsg(', I could not find that country/state', 3000);
 		return;
@@ -69,109 +95,42 @@ function showStats(p, name) {
 		if (!percent) percent = '<0.001';
 		embed.fields.push({
 			name: 'Total Cases',
-			value:
-				'**' +
-				p.global.toFancyNum(stat.cases) +
-				'** (+' +
-				p.global.toFancyNum(stat.todayCases) +
-				') [' +
-				percent +
-				'%]',
+			value: '**' + p.global.toFancyNum(stat.cases) + '** (+' + p.global.toFancyNum(stat.todayCases) + ') [' + percent + '%]',
 		});
 
 		percent = Math.round(stat.deathsPerOneMillion / 1000) / 1000;
 		if (!percent) percent = '<0.001';
 		embed.fields.push({
 			name: 'Total Deaths',
-			value:
-				'**' +
-				p.global.toFancyNum(stat.deaths) +
-				'** (+' +
-				p.global.toFancyNum(stat.todayDeaths) +
-				') [' +
-				percent +
-				'%]',
+			value: '**' + p.global.toFancyNum(stat.deaths) + '** (+' + p.global.toFancyNum(stat.todayDeaths) + ') [' + percent + '%]',
 		});
 
 		percent = Math.round((stat.recovered / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({
-			inline: true,
-			name: 'Recovered',
-			value: '**' + stat.recovered + '** [' + percent + '%]',
-		});
+		embed.fields.push({ inline: true, name: 'Recovered', value: '**' + stat.recovered + '** [' + percent + '%]' });
 
 		percent = Math.round((stat.active / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({
-			inline: true,
-			name: 'Infected',
-			value: '**' + stat.active + '** [' + percent + '%]',
-		});
+		embed.fields.push({ inline: true, name: 'Infected', value: '**' + stat.active + '** [' + percent + '%]' });
 
 		percent = Math.round((stat.critical / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({
-			inline: true,
-			name: 'Critical',
-			value: '**' + stat.critical + '** [' + percent + '%]',
-		});
+		embed.fields.push({ inline: true, name: 'Critical', value: '**' + stat.critical + '** [' + percent + '%]' });
 	} else if (stat.state) {
-		embed.fields.push({
-			name: 'Total Cases',
-			value:
-				'**' +
-				p.global.toFancyNum(stat.cases) +
-				'** (+' +
-				p.global.toFancyNum(stat.todayCases) +
-				')',
-		});
-
-		embed.fields.push({
-			name: 'Total Deaths',
-			value:
-				'**' +
-				p.global.toFancyNum(stat.deaths) +
-				'** (+' +
-				p.global.toFancyNum(stat.todayDeaths) +
-				')',
-		});
+		embed.fields.push({ name: 'Total Cases', value: '**' + p.global.toFancyNum(stat.cases) + '** (+' + p.global.toFancyNum(stat.todayCases) + ')' });
+		embed.fields.push({ name: 'Total Deaths', value: '**' + p.global.toFancyNum(stat.deaths) + '** (+' + p.global.toFancyNum(stat.todayDeaths) + ')' });
 
 		let percent = Math.round(((stat.cases - stat.active) / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({
-			inline: true,
-			name: 'Recovered',
-			value: '**' + (stat.cases - stat.active) + '** [' + percent + '%]',
-		});
+		embed.fields.push({ inline: true, name: 'Recovered', value: '**' + (stat.cases - stat.active) + '** [' + percent + '%]' });
 
 		percent = Math.round((stat.active / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({
-			inline: true,
-			name: 'Infected',
-			value: '**' + stat.active + '** [' + percent + '%]',
-		});
+		embed.fields.push({ inline: true, name: 'Infected', value: '**' + stat.active + '** [' + percent + '%]' });
 	} else {
 		p.errorMsg(', I could not find that country/state', 3000);
 		return;
 	}
 
 	p.send({ embed });
-}
-
-async function fetchCases() {
-	request(
-		{
-			method: 'GET',
-			uri: process.env.SHARDER_HOST + '/covid',
-		},
-		(error, res, body) => {
-			if (error) {
-				console.error(error);
-				return;
-			}
-			cases = JSON.parse(body);
-		}
-	);
 }
