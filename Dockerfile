@@ -2,7 +2,10 @@ FROM node:20-bookworm-slim
 
 WORKDIR /app
 
-# erlpack dan native module lain dikompilasi oleh node-gyp.
+ENV DEBIAN_FRONTEND=noninteractive
+ENV npm_config_python=/usr/bin/python3
+ENV PYTHON=/usr/bin/python3
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -10,12 +13,20 @@ RUN apt-get update \
         python3 \
         make \
         g++ \
-    && npm config set python /usr/bin/python3 \
+        libcairo2-dev \
+        libpango1.0-dev \
+        libjpeg-dev \
+        libgif-dev \
+        librsvg2-dev \
+        libpixman-1-dev \
+        libxcb1-dev \
+        pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm install --omit=dev
+
+RUN npm ci --include=dev
 
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
