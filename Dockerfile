@@ -25,7 +25,7 @@ RUN apt-get update \
 
 COPY package*.json ./
 
-RUN npm ci --include=dev
+RUN npm install --include=dev --no-audit --no-fund
 
 COPY . .
 
