@@ -28,7 +28,7 @@
     "express": "^4.17.1",
     "install": "^0.13.0",
     "mathjs": "^6.6.5",
-    "merge-images": "github:/merge-images",
+    "merge-images": "github:ChristopherBThai/merge-images",
     "namor": "^2.0.2",
     "node-dogstatsd": "0.0.7",
     "node-vibrant": "^3.1.5",
