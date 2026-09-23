@@ -32,7 +32,13 @@ const clusters = Math.max(1, parseInt(process.env.CLUSTERS || '1', 10));
 			lastShardID: shardCount - 1,
 		});
 
-		rateLimitUtil.init(sharder.bucket, process.env.DEBUG === 'true');
+		if (sharder.bucket) {
+			rateLimitUtil.init(sharder.bucket, process.env.DEBUG === 'true');
+		} else {
+			console.warn(
+				'[OwO] Rate limit bucket tidak tersedia pada sharder master. Statistik rate limit dilewati.'
+			);
+		}
 	} catch (e) {
 		console.error('[OwO] Failed to start:', e);
 		process.exitCode = 1;
