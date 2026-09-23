@@ -9,8 +9,8 @@ const fs = require('fs');
 const path = require('path');
 const alasql = require('alasql');
 
-const DB_PATH = path.resolve(process.env.DB_PATH || path.join(__dirname, '../data/db.json'));
-const SCHEMA_PATH = path.join(__dirname, '../data/db.schema.json');
+const DB_PATH = path.resolve(process.env.DB_PATH || path.join(__dirname, '../../data/db.json'));
+const SCHEMA_PATH = path.join(__dirname, '../../data/db.schema.json');
 
 const clone = (v) => JSON.parse(JSON.stringify(v, (_, x) => typeof x === 'bigint' ? x.toString() : x));
 
@@ -54,6 +54,10 @@ function saveJsonAtomic(file, value) {
 }
 
 const schema = loadJson(SCHEMA_PATH, {});
+if (!Object.keys(schema).length) {
+	throw new Error(`[JSON DB] Schema kosong atau tidak ditemukan: ${SCHEMA_PATH}`);
+}
+
 let state = loadJson(DB_PATH, {});
 for (const table of Object.keys(schema)) {
 	if (!Array.isArray(state[table])) state[table] = [];
@@ -87,7 +91,7 @@ function valueForSql(v) {
 	if (v === null || v === undefined) return 'NULL';
 	if (typeof v === 'bigint') return `'${v.toString()}'`;
 	if (typeof v === 'number') return Number.isFinite(v) ? String(v) : 'NULL';
-	if (v instanceof Date) return `'${v.toISOString().slice(0,19).replace('T',' ')}'`;
+	if (v instanceof Date) return `'${v.toISOString().slice(0,19).replace('T', ' ')}'`;
 	return `'${String(v).replace(/\\/g, '\\\\').replace(/'/g, "''").replace(/\r/g, '\\r').replace(/\n/g, '\\n')}'`;
 }
 
@@ -146,26 +150,6 @@ function normalizeParams(params) {
 function tableName(sql) {
 	const m = sql.match(/^(?:INSERT(?:\s+IGNORE)?\s+INTO|UPDATE(?:\s+IGNORE)?|DELETE\s+FROM)\s+`?([A-Za-z0-9_]+)`?/i);
 	return m && m[1];
-}
-
-function primaryKey(table, row) {
-	const info = schema[table];
-	if (!info) return null;
-	const keys = info.pk || [];
-	if (!keys.length) return null;
-	return keys.map(k => `${k}=${row[k] === undefined ? '' : String(row[k])}`).join('|');
-}
-
-function uniqueKey(table, row) {
-	const info = schema[table];
-	if (!info) return null;
-	const sets = [info.pk || [], ...(info.unique || [])].filter(x => x.length);
-	for (const keys of sets) {
-		const vals = keys.map(k => row[k]);
-		if (vals.some(v => v === undefined || v === null)) continue;
-		return keys.map(k => `${k}=${String(row[k])}`).join('|');
-	}
-	return null;
 }
 
 function duplicateRow(table, row) {
@@ -238,13 +222,10 @@ function parseLiteral(v, params, paramIndex) {
 		const row = Array.isArray(result) ? result[0] : result;
 		return row ? row[Object.keys(row)[0]] : null;
 	}
-	if (/^-?\d+$/.test(v)) {
-		// Discord snowflakes must not pass through JS Number.
-		return v.length >= 15 ? v : Number(v);
-	}
+	if (/^-?\d+$/.test(v)) return v.length >= 15 ? v : Number(v);
 	if (/^-?\d+\.\d+$/.test(v)) return Number(v);
 	if ((v.startsWith("'") && v.endsWith("'")) || (v.startsWith('"') && v.endsWith('"'))) {
-		return v.slice(1,-1).replace(/''/g, "'").replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\\\/g, '\\');
+		return v.slice(1, -1).replace(/''/g, "'").replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\\\/g, '\\');
 	}
 	return v;
 }
@@ -255,13 +236,13 @@ function executeInsert(sql, params) {
 	const [, table, colText, valuesText, dupText] = m;
 	const info = schema[table];
 	if (!info) throw new Error(`Unknown table: ${table}`);
-	const columns = (colText ? colText.split(',') : info.columns.map(c => c.name)).map(c => c.trim().replace(/`/g,''));
+	const columns = (colText ? colText.split(',') : info.columns.map(c => c.name)).map(c => c.trim().replace(/`/g, ''));
 	const tuples = parseTuples(valuesText);
 	const paramIndex = { value: 0 };
 	let affected = 0, insertId;
 
 	for (const tuple of tuples) {
-		const raw = tuple.replace(/^\(/,'').replace(/\)$/,'');
+		const raw = tuple.replace(/^\(/, '').replace(/\)$/, '');
 		const values = splitValues(raw).map(v => parseLiteral(v, params, paramIndex));
 		const row = {};
 		columns.forEach((c, i) => { row[c] = values[i]; });
@@ -275,7 +256,6 @@ function executeInsert(sql, params) {
 				const am = assignment.match(/^`?([A-Za-z0-9_]+)`?\s*=\s*(.*)$/i);
 				if (!am) continue;
 				const col = am[1], expr = am[2];
-				// Support VALUES(col), arithmetic against existing values, literals and NOW().
 				let value;
 				const vm = expr.match(/^VALUES\(`?([A-Za-z0-9_]+)`?\)$/i);
 				if (vm) value = row[vm[1]];
@@ -306,17 +286,8 @@ function executeOne(sql, params) {
 	const insertResult = executeInsert(sql, params);
 	if (insertResult) return insertResult;
 
-	// MySQL's UPDATE ... JOIN syntax is rewritten for the common user.uid = user_item.uid pattern.
-	sql = sql.replace(
-		/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+INNER\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is,
-		'UPDATE $1 SET $4 WHERE $5'
-	);
-	sql = sql.replace(
-		/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+LEFT\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is,
-		'UPDATE $1 SET $4 WHERE $5'
-	);
-
-	// Convert a few MySQL-only constructs that appear in this bot.
+	sql = sql.replace(/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+INNER\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is, 'UPDATE $1 SET $4 WHERE $5');
+	sql = sql.replace(/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+LEFT\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is, 'UPDATE $1 SET $4 WHERE $5');
 	sql = sql.replace(/\bUPDATE\s+IGNORE\b/gi, 'UPDATE');
 	sql = sql.replace(/\bINSERT\s+IGNORE\b/gi, 'INSERT');
 	sql = sql.replace(/\bTIMESTAMPDIFF\s*\(/gi, 'TIMESTAMPDIFF(');
