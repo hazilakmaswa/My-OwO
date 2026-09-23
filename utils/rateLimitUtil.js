@@ -7,14 +7,35 @@
 const request = require('request');
 
 let influxErrorShown = false;
+let bucketWarningShown = false;
 
 exports.init = function (bucket, debug) {
-	setInterval(() => {
-		logBucket(bucket, debug);
+	if (!bucket || typeof bucket.getState !== 'function') {
+		if (!bucketWarningShown) {
+			console.warn(
+				'[RateLimit] Bucket tidak tersedia. Pengiriman metrik rate limit dinonaktifkan.'
+			);
+			bucketWarningShown = true;
+		}
+		return null;
+	}
+
+	return setInterval(() => {
+		logBucket(bucket, debug).catch((error) => {
+			console.error('[RateLimit] Gagal mencatat bucket:', error.message);
+		});
 	}, 10000);
 };
 
 async function logBucket(bucket, debug) {
+	if (!bucket || typeof bucket.getState !== 'function') {
+		return;
+	}
+
+	if (!process.env.INFLUXDB_HOST) {
+		return;
+	}
+
 	const { concurrent, queueCount, bucketCount, waiting } = bucket.getState();
 	const body = {
 		password: process.env.INFLUXDB_PASS,
@@ -30,19 +51,23 @@ async function logBucket(bucket, debug) {
 		body.debug = true;
 	}
 
-	request(
-		{
-			method: 'POST',
-			uri: `${process.env.INFLUXDB_HOST}/qos`,
-			json: true,
-			body: body,
-		},
-		function (err) {
-			if (err && !influxErrorShown) {
-				console.error('InfluxDB is inactive. Log upload will not work.');
-				influxErrorShown = true;
-				throw err;
+	return new Promise((resolve) => {
+		request(
+			{
+				method: 'POST',
+				uri: `${process.env.INFLUXDB_HOST}/qos`,
+				json: true,
+				body,
+			},
+			function (err) {
+				if (err && !influxErrorShown) {
+					console.error(
+						'[RateLimit] InfluxDB tidak aktif. Upload metrik dinonaktifkan.'
+					);
+					influxErrorShown = true;
+				}
+				resolve();
 			}
-		}
-	);
+		);
+	});
 }
