@@ -4,13 +4,32 @@
  * This software is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  * For more information, see README.md and LICENSE
  */
+/*
+ * OwO Bot for Discord
+ * Copyright (C) 2019 Christopher Thai
+ * This software is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ * For more information, see README.md and LICENSE
+ */
+
+const path = require('path');
 const mysql = require('../../../botHandlers/jsonDatabaseHandler.js');
 
 let macro;
+
 try {
-	macro = require('../../../../../tokens/macro.js');
+	macro = require(path.resolve(__dirname, '../../../../tokens/macro.js'));
 } catch (e) {
-	console.error('Missing macro.js. Please add this file to ../tokens/macro.js\n', e);
+	console.error(
+		'[Autohunt] macro.js tidak ditemukan di tokens/macro.js atau secret/macro.js.'
+	);
+
+	try {
+		macro = require(path.resolve(__dirname, '../../../../secret/macro.js'));
+	} catch (secretError) {
+		console.error(
+			'[Autohunt] Fallback secret/macro.js juga tidak ditemukan.'
+		);
+	}
 }
 
 const traits = {
