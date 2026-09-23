@@ -4,14 +4,15 @@
  * This software is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  * For more information, see README.md and LICENSE
  */
-
 const mysql = require('../../../botHandlers/jsonDatabaseHandler.js');
+
 let macro;
 try {
 	macro = require('../../../../../tokens/macro.js');
 } catch (e) {
 	console.error('Missing macro.js. Please add this file to ../tokens/macro.js\n', e);
 }
+
 const traits = {
 	efficiency: { inc: 10, pow: 1.748, base: 25, upg: 1, max: 215, prefix: '/H' },
 	duration: { inc: 10, pow: 1.7, base: 0.5, upg: 0.1, max: 235, prefix: 'H' },
@@ -20,6 +21,7 @@ const traits = {
 	exp: { inc: 10, pow: 1.8, base: 0, upg: 35, max: 200, prefix: ' xp/H' },
 	radar: { inc: 50, pow: 2.5, base: 0, upg: 0.00000004, max: 999, prefix: ' %' },
 };
+
 const bots = [
 	'<:cbot:459996048379609098>',
 	'<:ubot:459996048660889600>',
@@ -27,11 +29,17 @@ const bots = [
 	'<:ebot:459996050174902272>',
 	'<:mbot:459996049784963073>',
 	'<a:lbot:459996050883608576>',
-	'<a:fbot:459996050174902272>',
+	'<a:fbot:1122059611206328350>',
 ];
 
 let totalBots = 4000000;
-setInterval(updateTotal, 60 * 60 * 1000);
+
+setInterval(() => {
+	updateTotal().catch((error) => {
+		console.error('[Autohunt] Gagal menghitung total bot:', error.message);
+	});
+}, 60 * 60 * 1000);
+
 updateTotal().catch((error) => {
 	console.error('[Autohunt] Gagal menghitung total bot:', error.message);
 });
@@ -84,15 +92,18 @@ exports.captcha = async function (p, word, text) {
 
 exports.getBot = function (result) {
 	if (result == undefined) return bots[0];
+
 	const rank = result.rank;
 	if (!rank || totalBots == undefined) return bots[0];
 	if (rank <= 1) return bots[6];
+
 	const percent = ((totalBots - rank) / totalBots) * 100;
+
 	if (percent <= 43.85) return bots[0];
-	if (percent <= 78.85) return bots[1];
-	if (percent <= 98.85) return bots[2];
-	if (percent <= 99.85) return bots[3];
-	if (percent <= 99.95) return bots[4];
+	else if (percent <= 78.85) return bots[1];
+	else if (percent <= 98.85) return bots[2];
+	else if (percent <= 99.85) return bots[3];
+	else if (percent <= 99.95) return bots[4];
 	return bots[5];
 };
 
@@ -103,7 +114,6 @@ exports.getTotalBots = function () {
 async function updateTotal() {
 	const sql = 'SELECT COUNT(id) AS `total` FROM autohunt;';
 	const result = await mysql.query(sql);
-	if (result[0]?.total) {
-		totalBots = result[0].total;
-	}
+	const total = result[0]?.total ?? 0;
+	if (total) totalBots = total;
 }
