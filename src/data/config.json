@@ -30,7 +30,7 @@
 		}
 	},
 
-	"prefix": "owo",
+	"prefix": "ewe",
 	"embed_color": 8240363,
 	"success_color": 65280,
 	"fail_color": 16711680,
@@ -99,5 +99,5 @@
 	"guildlink": "https://discord.com/invite/owobot",
 	"invitelink": "https://discordapp.com/oauth2/authorize?client_id=408785106942164992&permissions=1074120776&scope=bot",
 	"blacklist": {},
-	"debug": true
+	"debug": false
 }
