@@ -12,7 +12,7 @@ const alasql = require('alasql');
 const DB_PATH = path.resolve(process.env.DB_PATH || path.join(__dirname, '../../data/db.json'));
 const SCHEMA_PATH = path.join(__dirname, '../../data/db.schema.json');
 
-const clone = (v) => JSON.parse(JSON.stringify(v, (_, x) => typeof x === 'bigint' ? x.toString() : x));
+const clone = (v) => JSON.parse(JSON.stringify(v, (_, x) => (typeof x === 'bigint' ? x.toString() : x)));
 
 function nowSql() {
 	return new Date();
@@ -26,14 +26,23 @@ alasql.fn.TIMESTAMPDIFF = (unit, from, to) => {
 	if (!Number.isFinite(a) || !Number.isFinite(b)) return 0;
 	const diff = b - a;
 	switch (String(unit).toUpperCase()) {
-		case 'SECOND': return Math.floor(diff / 1000);
-		case 'MINUTE': return Math.floor(diff / 60000);
-		case 'HOUR': return Math.floor(diff / 3600000);
-		case 'DAY': return Math.floor(diff / 86400000);
-		case 'WEEK': return Math.floor(diff / 604800000);
-		case 'MONTH': return (new Date(to).getFullYear() - new Date(from).getFullYear()) * 12 +
-			new Date(to).getMonth() - new Date(from).getMonth();
-		default: return diff;
+		case 'SECOND':
+			return Math.floor(diff / 1000);
+		case 'MINUTE':
+			return Math.floor(diff / 60000);
+		case 'HOUR':
+			return Math.floor(diff / 3600000);
+		case 'DAY':
+			return Math.floor(diff / 86400000);
+		case 'WEEK':
+			return Math.floor(diff / 604800000);
+		case 'MONTH':
+			return (
+				(new Date(to).getFullYear() - new Date(from).getFullYear()) * 12 +
+				(new Date(to).getMonth() - new Date(from).getMonth())
+			);
+		default:
+			return diff;
 	}
 };
 
@@ -49,7 +58,10 @@ function saveJsonAtomic(file, value) {
 	const dir = path.dirname(file);
 	fs.mkdirSync(dir, { recursive: true });
 	const tmp = `${file}.tmp`;
-	fs.writeFileSync(tmp, JSON.stringify(value, (_, x) => typeof x === 'bigint' ? x.toString() : x, 2));
+	fs.writeFileSync(
+		tmp,
+		JSON.stringify(value, (_, x) => (typeof x === 'bigint' ? x.toString() : x), 2)
+	);
 	fs.renameSync(tmp, file);
 }
 
@@ -91,8 +103,12 @@ function valueForSql(v) {
 	if (v === null || v === undefined) return 'NULL';
 	if (typeof v === 'bigint') return `'${v.toString()}'`;
 	if (typeof v === 'number') return Number.isFinite(v) ? String(v) : 'NULL';
-	if (v instanceof Date) return `'${v.toISOString().slice(0,19).replace('T', ' ')}'`;
-	return `'${String(v).replace(/\\/g, '\\\\').replace(/'/g, "''").replace(/\r/g, '\\r').replace(/\n/g, '\\n')}'`;
+	if (v instanceof Date) return `'${v.toISOString().slice(0, 19).replace('T', ' ')}'`;
+	return `'${String(v)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "''")
+		.replace(/\r/g, '\\r')
+		.replace(/\n/g, '\\n')}'`;
 }
 
 function syncStateFromDb(tableNames) {
@@ -107,14 +123,20 @@ let flushTimer = null;
 function scheduleFlush() {
 	clearTimeout(flushTimer);
 	flushTimer = setTimeout(() => {
-		try { saveJsonAtomic(DB_PATH, state); }
-		catch (e) { console.error('[JSON DB] save failed:', e); }
+		try {
+			saveJsonAtomic(DB_PATH, state);
+		} catch (e) {
+			console.error('[JSON DB] save failed:', e);
+		}
 	}, 100);
 }
 
 function splitStatements(sql) {
 	const result = [];
-	let start = 0, quote = null, escape = false, depth = 0;
+	let start = 0;
+	let quote = null;
+	let escape = false;
+	let depth = 0;
 	for (let i = 0; i < sql.length; i++) {
 		const ch = sql[i];
 		if (quote) {
@@ -140,11 +162,13 @@ function normalizeSql(sql) {
 		.replace(/\bFOR\s+UPDATE\b/gi, '')
 		.replace(/\bLOCK\s+IN\s+SHARE\s+MODE\b/gi, '')
 		.replace(/\bIGNORE\b/gi, '')
-		.replace(/\bUSING\s+BTREE\b/gi, '');
+		.replace(/\bUSING\s+BTREE\b/gi, '')
+		.replace(/\bAS\s+total\b/ig, 'AS `total`')
+		.replace(/\bAS\s+totalcount\b/ig, 'AS `totalCount`');
 }
 
 function normalizeParams(params) {
-	return (Array.isArray(params) ? params : [params]).map((v) => typeof v === 'bigint' ? v.toString() : v);
+	return (Array.isArray(params) ? params : [params]).map((v) => (typeof v === 'bigint' ? v.toString() : v));
 }
 
 function tableName(sql) {
@@ -155,23 +179,38 @@ function tableName(sql) {
 function duplicateRow(table, row) {
 	const info = schema[table];
 	if (!info) return null;
-	const sets = [info.pk || [], ...(info.unique || [])].filter(x => x.length);
-	return db.tables[table].data.find(existing => sets.some(keys =>
-		keys.length && keys.every(k => existing[k] !== undefined && existing[k] !== null &&
-			row[k] !== undefined && row[k] !== null && String(existing[k]) === String(row[k]))
-	)) || null;
+	const sets = [info.pk || [], ...(info.unique || [])].filter((x) => x.length);
+	return (
+		db.tables[table].data.find((existing) =>
+			sets.some(
+				(keys) =>
+					keys.length &&
+					keys.every(
+						(k) =>
+							existing[k] !== undefined &&
+							existing[k] !== null &&
+							row[k] !== undefined &&
+							row[k] !== null &&
+							String(existing[k]) === String(row[k])
+					)
+			)
+		) || null
+	);
 }
 
 function nextAuto(table) {
 	const col = schema[table] && schema[table].auto;
 	if (!col) return undefined;
-	const values = db.tables[table].data.map(r => Number(r[col])).filter(Number.isFinite);
+	const values = db.tables[table].data.map((r) => Number(r[col])).filter(Number.isFinite);
 	return values.length ? Math.max(...values) + 1 : 1;
 }
 
 function parseTuples(text) {
 	const tuples = [];
-	let current = '', quote = null, escape = false, depth = 0;
+	let current = '';
+	let quote = null;
+	let escape = false;
+	let depth = 0;
 	for (let i = 0; i < text.length; i++) {
 		const ch = text[i];
 		if (quote) {
@@ -180,32 +219,54 @@ function parseTuples(text) {
 			else if (ch === '\\') escape = true;
 			else if (ch === quote) quote = null;
 		} else if (ch === "'" || ch === '"') {
-			quote = ch; current += ch;
+			quote = ch;
+			current += ch;
 		} else if (ch === '(') {
-			depth++; current += ch;
+			depth++;
+			current += ch;
 		} else if (ch === ')') {
-			depth--; current += ch;
-			if (depth === 0) { tuples.push(current.trim()); current = ''; }
+			depth--;
+			current += ch;
+			if (depth === 0) {
+				tuples.push(current.trim());
+				current = '';
+			}
 		} else if (depth === 0 && ch === ',') {
 			// separator between tuples
-		} else current += ch;
+		} else {
+			current += ch;
+		}
 	}
 	return tuples;
 }
 
 function splitValues(text) {
-	const out = []; let cur = '', quote = null, escape = false, depth = 0;
+	const out = [];
+	let cur = '';
+	let quote = null;
+	let escape = false;
+	let depth = 0;
 	for (const ch of text) {
 		if (quote) {
 			cur += ch;
 			if (escape) escape = false;
 			else if (ch === '\\') escape = true;
 			else if (ch === quote) quote = null;
-		} else if (ch === "'" || ch === '"') { quote = ch; cur += ch; }
-		else if (ch === '(') { depth++; cur += ch; }
-		else if (ch === ')') { depth--; cur += ch; }
-		else if (ch === ',' && depth === 0) { out.push(cur.trim()); cur = ''; }
-		else cur += ch;
+		} else if (ch === "'" || ch === '"') {
+			quote = ch;
+			cur += ch;
+		} else if (ch === '(') {
+			depth++;
+			cur += ch;
+		} else if (ch === ')') {
+			depth--;
+			cur += ch;
+		} else if (ch === ',' && depth === 0) {
+			out.push(cur.trim());
+			cur = '';
+		} else {
+			cur += ch;
+		}
 	}
 	out.push(cur.trim());
 	return out;
@@ -222,10 +283,17 @@ function parseLiteral(v, params, paramIndex) {
 		const row = Array.isArray(result) ? result[0] : result;
 		return row ? row[Object.keys(row)[0]] : null;
 	}
-	if (/^-?\d+$/.test(v)) return v.length >= 15 ? v : Number(v);
+	if (/^-?\d+$/.test(v)) {
+		return v.length >= 15 ? v : Number(v);
+	}
 	if (/^-?\d+\.\d+$/.test(v)) return Number(v);
 	if ((v.startsWith("'") && v.endsWith("'")) || (v.startsWith('"') && v.endsWith('"'))) {
-		return v.slice(1, -1).replace(/''/g, "'").replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\\\/g, '\\');
+		return v
+			.slice(1, -1)
+			.replace(/''/g, "'")
+			.replace(/\\n/g, '\n')
+			.replace(/\\r/g, '\r')
+			.replace(/\\\\/g, '\\');
 	}
 	return v;
 }
@@ -236,34 +304,43 @@ function executeInsert(sql, params) {
 	const [, table, colText, valuesText, dupText] = m;
 	const info = schema[table];
 	if (!info) throw new Error(`Unknown table: ${table}`);
-	const columns = (colText ? colText.split(',') : info.columns.map(c => c.name)).map(c => c.trim().replace(/`/g, ''));
+	const columns = (colText ? colText.split(',') : info.columns.map((c) => c.name)).map((c) => c.trim().replace(/`/g, ''));
 	const tuples = parseTuples(valuesText);
 	const paramIndex = { value: 0 };
-	let affected = 0, insertId;
+	let affected = 0;
+	let insertId;
 
 	for (const tuple of tuples) {
 		const raw = tuple.replace(/^\(/, '').replace(/\)$/, '');
-		const values = splitValues(raw).map(v => parseLiteral(v, params, paramIndex));
+		const values = splitValues(raw).map((v) => parseLiteral(v, params, paramIndex));
 		const row = {};
-		columns.forEach((c, i) => { row[c] = values[i]; });
+		columns.forEach((c, i) => {
+			row[c] = values[i];
+		});
+
 		if (info.auto && row[info.auto] === undefined) row[info.auto] = nextAuto(table);
 
 		const dup = duplicateRow(table, row);
 		if (dup) {
 			if (!dupText) continue;
-			const assignments = dupText.split(',').map(x => x.trim()).filter(Boolean);
+			const assignments = dupText.split(',').map((x) => x.trim()).filter(Boolean);
 			for (const assignment of assignments) {
 				const am = assignment.match(/^`?([A-Za-z0-9_]+)`?\s*=\s*(.*)$/i);
 				if (!am) continue;
-				const col = am[1], expr = am[2];
+				const col = am[1];
+				const expr = am[2];
+
 				let value;
 				const vm = expr.match(/^VALUES\(`?([A-Za-z0-9_]+)`?\)$/i);
 				if (vm) value = row[vm[1]];
 				else if (/^NOW\(\)$/i.test(expr)) value = nowSql();
 				else {
 					const arithmetic = expr.match(/^`?([A-Za-z0-9_]+)`?\s*([+-])\s*(\d+(?:\.\d+)?)$/);
-					if (arithmetic) value = Number(dup[arithmetic[1]]) + (arithmetic[2] === '+' ? 1 : -1) * Number(arithmetic[3]);
-					else value = parseLiteral(expr, params, paramIndex);
+					if (arithmetic) {
+						value = Number(dup[arithmetic[1]]) + (arithmetic[2] === '+' ? 1 : -1) * Number(arithmetic[3]);
+					} else {
+						value = parseLiteral(expr, params, paramIndex);
+					}
 				}
 				dup[col] = value;
 			}
@@ -286,8 +363,15 @@ function executeOne(sql, params) {
 	const insertResult = executeInsert(sql, params);
 	if (insertResult) return insertResult;
 
-	sql = sql.replace(/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+INNER\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is, 'UPDATE $1 SET $4 WHERE $5');
-	sql = sql.replace(/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+LEFT\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is, 'UPDATE $1 SET $4 WHERE $5');
+	sql = sql.replace(
+		/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+INNER\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is,
+		'UPDATE $1 SET $4 WHERE $5'
+	);
+	sql = sql.replace(
+		/^UPDATE\s+`?([A-Za-z0-9_]+)`?\s+LEFT\s+JOIN\s+`?([A-Za-z0-9_]+)`?\s+ON\s+(.+?)\s+SET\s+(.+?)\s+WHERE\s+(.+)$/is,
+		'UPDATE $1 SET $4 WHERE $5'
+	);
+
 	sql = sql.replace(/\bUPDATE\s+IGNORE\b/gi, 'UPDATE');
 	sql = sql.replace(/\bINSERT\s+IGNORE\b/gi, 'INSERT');
 	sql = sql.replace(/\bTIMESTAMPDIFF\s*\(/gi, 'TIMESTAMPDIFF(');
@@ -298,7 +382,7 @@ function executeOne(sql, params) {
 		if (/^(UPDATE|DELETE)\b/i.test(sql) && t) {
 			syncStateFromDb([t]);
 			scheduleFlush();
-			const affected = typeof result === 'number' ? result : (result && result.length ? result.length : 0);
+			const affected = typeof result === 'number' ? result : result && result.length ? result.length : 0;
 			return { affectedRows: affected, changedRows: affected };
 		}
 		if (/^SELECT\b/i.test(sql)) return result || [];
@@ -312,13 +396,14 @@ function executeOne(sql, params) {
 class JsonConnection {
 	query(sql, variables, callback) {
 		if (typeof variables === 'function') {
-			callback = variables; variables = [];
+			callback = variables;
+			variables = [];
 		}
 		const params = normalizeParams(variables || []);
 		const run = () => {
 			try {
 				const statements = splitStatements(sql);
-				const results = statements.map(statement => executeOne(statement, params));
+				const results = statements.map((statement) => executeOne(statement, params));
 				const value = results.length === 1 ? results[0] : results;
 				if (callback) callback(null, value);
 				return value;
@@ -344,25 +429,34 @@ class JsonTransaction extends JsonConnection {
 		super();
 		this.snapshot = clone(state);
 	}
-	beginTransaction(callback) { if (callback) callback(null); return Promise.resolve(); }
+
+	beginTransaction(callback) {
+		if (callback) callback(null);
+		return Promise.resolve();
+	}
+
 	commit(callback) {
 		syncStateFromDb(Object.keys(schema));
 		scheduleFlush();
 		if (callback) callback(null);
 		return Promise.resolve();
 	}
+
 	rollback(callback) {
 		state = this.snapshot;
 		rebuild();
 		if (callback) callback(null);
 		return Promise.resolve();
 	}
+
 	release() {}
 }
 
 function rebuild() {
 	for (const name of Object.keys(db.tables)) {
-		try { db.exec(`DROP TABLE \`${name}\``); } catch (_) {}
+		try {
+			db.exec(`DROP TABLE \`${name}\``);
+		} catch (_) {}
 	}
 	createTables();
 }
@@ -370,4 +464,11 @@ function rebuild() {
 createTables();
 
 const con = new JsonConnection();
-module.exports = { con, mysql: { escape: (v) => valueForSql(v) }, db, state };
+module.exports = {
+	con,
+	mysql: {
+		escape: (v) => valueForSql(v),
+	},
+	db,
+	state,
+};
