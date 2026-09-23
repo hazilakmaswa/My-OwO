@@ -4,10 +4,9 @@
  * This software is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  * For more information, see README.md and LICENSE
  */
-
 const CommandInterface = require('../../CommandInterface.js');
-
 const request = require('request');
+
 let cases = {};
 
 function fetchCases() {
@@ -70,10 +69,12 @@ function showStats(p, name) {
 		p.errorMsg(', I could not find that country/state', 3000);
 		return;
 	}
+
 	let title = 'Global cases for COVID19';
 	if (stat.country || stat.state) {
 		title = 'COVID19 cases for ' + (stat.country || stat.state);
 	}
+
 	const embed = {
 		author: {
 			name: title,
@@ -107,26 +108,52 @@ function showStats(p, name) {
 
 		percent = Math.round((stat.recovered / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({ inline: true, name: 'Recovered', value: '**' + stat.recovered + '** [' + percent + '%]' });
+		embed.fields.push({
+			inline: true,
+			name: 'Recovered',
+			value: '**' + stat.recovered + '** [' + percent + '%]',
+		});
 
 		percent = Math.round((stat.active / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({ inline: true, name: 'Infected', value: '**' + stat.active + '** [' + percent + '%]' });
+		embed.fields.push({
+			inline: true,
+			name: 'Infected',
+			value: '**' + stat.active + '** [' + percent + '%]',
+		});
 
 		percent = Math.round((stat.critical / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({ inline: true, name: 'Critical', value: '**' + stat.critical + '** [' + percent + '%]' });
+		embed.fields.push({
+			inline: true,
+			name: 'Critical',
+			value: '**' + stat.critical + '** [' + percent + '%]',
+		});
 	} else if (stat.state) {
-		embed.fields.push({ name: 'Total Cases', value: '**' + p.global.toFancyNum(stat.cases) + '** (+' + p.global.toFancyNum(stat.todayCases) + ')' });
-		embed.fields.push({ name: 'Total Deaths', value: '**' + p.global.toFancyNum(stat.deaths) + '** (+' + p.global.toFancyNum(stat.todayDeaths) + ')' });
+		embed.fields.push({
+			name: 'Total Cases',
+			value: '**' + p.global.toFancyNum(stat.cases) + '** (+' + p.global.toFancyNum(stat.todayCases) + ')',
+		});
+		embed.fields.push({
+			name: 'Total Deaths',
+			value: '**' + p.global.toFancyNum(stat.deaths) + '** (+' + p.global.toFancyNum(stat.todayDeaths) + ')',
+		});
 
 		let percent = Math.round(((stat.cases - stat.active) / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({ inline: true, name: 'Recovered', value: '**' + (stat.cases - stat.active) + '** [' + percent + '%]' });
+		embed.fields.push({
+			inline: true,
+			name: 'Recovered',
+			value: '**' + (stat.cases - stat.active) + '** [' + percent + '%]',
+		});
 
 		percent = Math.round((stat.active / stat.cases) * 1000) / 10;
 		if (!percent) percent = '<0.001';
-		embed.fields.push({ inline: true, name: 'Infected', value: '**' + stat.active + '** [' + percent + '%]' });
+		embed.fields.push({
+			inline: true,
+			name: 'Infected',
+			value: '**' + stat.active + '** [' + percent + '%]',
+		});
 	} else {
 		p.errorMsg(', I could not find that country/state', 3000);
 		return;
